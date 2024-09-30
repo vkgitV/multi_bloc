@@ -13,12 +13,19 @@ class CounterScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: const Text('Counter')),
       body: BlocConsumer<CounterBloc, CounterState>(
+        listenWhen: (previous, current) {
+          print("listen when ${current.isFive}");
+          return current.isFive;
+        },
         listener: (context, state) {
-          if (state.isFive) {
+          // if (state.isFive) {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text('Count reached 5!')),
             );
-          }
+          // }
+        },
+        buildWhen: (previous, current) {
+          return current.count <=5;
         },
         builder: (context, state) {
           return Center(
